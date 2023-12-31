@@ -27,12 +27,12 @@ int main() {
     Node* head = new Node(user_x0, user_y0, user_x1, user_y1);
     Quadtree tree = Quadtree(head);
 
-    std::string s;
-    std::string stop = "stop";
+
 
     double user_x;
     double user_y;
-    do {
+    char cont;
+    while (true) {
         std::cout << "enter x: ";
         std::cin >> user_x;
         std::cout << "enter y: ";
@@ -45,7 +45,16 @@ int main() {
         }
 
         tree.insert(tree.get_head(), user_x, user_y);
-    } while (s.compare(stop) != 0);
+        
+        std::cout << "continue? ";
+        std::cin >> cont;
+
+        if (cont == 'n')
+        {
+            break;
+        }
+
+    }
 
     
 
