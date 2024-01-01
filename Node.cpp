@@ -14,13 +14,14 @@ Node::Node(double x0, double y0, double x1, double y1) {
     this->y1 = y1;
 
     arr_size = 0;
+    // initialize array
+    this->points = new Point[m];
 
     // next pointers
     this->top_left = this->bottom_left = this->bottom_right = this->top_right = nullptr;
 }
 
 void Node::add_point(double x, double y) {
-
     // package point
     Point descartes = Point(x, y);
 
@@ -38,9 +39,25 @@ void Node::expand() {
     double y_mid = 0.5 * (this->y1 + this->y0);
 
     Node* nthGenTL = new Node(this->x0, y_mid, x_mid, this->y1);
+    if (nthGenTL == nullptr) {
+        std::cout << "cannot expand tree" << std::endl;
+        exit(1);
+    }
     Node* nthGenBL = new Node(this->x0, this->y0, x_mid, y_mid);
+    if (nthGenBL == nullptr) {
+        std::cout << "cannot expand tree" << std::endl;
+        exit(1);
+    }
     Node* nthGenBR = new Node(x_mid, this->y0, this->x1, y_mid);
+    if (nthGenBR == nullptr) {
+        std::cout << "cannot expand tree" << std::endl;
+        exit(1);
+    }
     Node* nthGenTR = new Node(x_mid, y_mid, this->x1, this->y1);
+    if (nthGenTR == nullptr) {
+        std::cout << "cannot expand tree" << std::endl;
+        exit(1);
+    }
 
     // append to current node
     this->top_left = nthGenTL;
@@ -49,9 +66,9 @@ void Node::expand() {
     this->top_right = nthGenTR;
 
     // distribute the points to the children
-    for (int i{0}; i < m; ++i) {
+    for (int i = 0; i < m; i++) {
         std::cout << "adding point " << points[i].get_x() << ", " << points[i].get_y() << " to ";
-        if (points[i].get_x() <= x_mid && points[i].get_y() >= y_mid) {
+        if (this->points[i].get_x() <= x_mid && points[i].get_y() >= y_mid) {
             std::cout << "top left" << std::endl;
             this->top_left->add_point(points[i].get_x(), points[i].get_y());
         } else if (points[i].get_x() <= x_mid && points[i].get_y() < y_mid) {
@@ -69,6 +86,8 @@ void Node::expand() {
     }
 
     // free the array from the parent pointer because it is no longer needed and points to null
-    // delete[] this->points;
-    // this->points = nullptr;
+    if (this->points != nullptr) {
+        delete[] this->points;
+    }
+    this->points = nullptr;
 }

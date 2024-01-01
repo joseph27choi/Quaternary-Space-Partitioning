@@ -12,7 +12,7 @@ class Node {
     Node *top_left, *bottom_left, *bottom_right, *top_right;
 
     // dynamic memory allocation of size m
-    Point *points = new Point[m];
+    Point *points;
     int arr_size;
 
    public:
@@ -43,6 +43,8 @@ class Node {
     void increment_arr_size() { ++this->arr_size; }
 
     void expand();
+
+    
 };
 
 #endif

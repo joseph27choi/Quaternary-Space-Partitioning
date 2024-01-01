@@ -12,6 +12,8 @@ Quadtree::Quadtree(Node* first_node) {
 
 // just testing, need to fix
 void Quadtree::print(Node* trav) {
+    std::cout << "entered Quadtree::print()" << std::endl;
+
     // base case 1: head does not exist yet
     if (trav == nullptr) {
         return;
@@ -31,8 +33,12 @@ void Quadtree::print(Node* trav) {
     std::cout << trav->get_x0() << ", ";
     std::cout << trav->get_y0() << ", ";
     std::cout << trav->get_x1() << ", ";
-    std::cout << trav->get_y1() << " and ";
-    std::cout << trav->get_points()[0].get_x() << trav->get_points()[0].get_y() << std::endl;
+    std::cout << trav->get_y1() << " ";
+    if (trav->get_points() != nullptr) {
+        std::cout << trav->get_points()[0].get_x() << trav->get_points()[0].get_y() << std::endl;
+    } else {
+        std::cout << "points no longer stored in this node" << std::endl;
+    }
 
     return;
 }
@@ -118,7 +124,9 @@ void Quadtree::destroy(Node* p_trav) {
     std::cout << p_trav->get_y1() << std::endl;
 
     // delete the node
-    delete[] p_trav->get_points();
+    if (p_trav->get_points() != nullptr) {
+        delete[] p_trav->get_points();
+    }
     delete p_trav;
     p_trav = nullptr;
 

@@ -5,7 +5,7 @@
 
 class Quadtree {
    private:
-    Node *head{};
+    Node *head;
 
    public:
     Quadtree(Node*);
