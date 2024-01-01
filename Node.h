@@ -37,7 +37,7 @@ class Node {
     static int get_m() { return m; }
 
     Point *get_points() { return this->points; }
-    void add_point(double& x, double& y);
+    void add_point(double x, double y);
 
     int get_arr_size() { return this->arr_size; }
     void increment_arr_size() { ++this->arr_size; }

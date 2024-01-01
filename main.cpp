@@ -5,7 +5,7 @@
 #include "Point.h"
 #include "Quadtree.cpp"
 
-int Node::m = 6;
+int Node::m = 4;
 
 int main() {
     double user_x0;
@@ -14,7 +14,7 @@ int main() {
     double user_y1;
 
     // prompt user for points
-    std::cout << "enter your boundary" << std::endl;
+    std::cout << "enter your test boundary" << std::endl;
     std::cout << "x0: ";
     std::cin >> user_x0;
     std::cout << "y0: ";
@@ -45,9 +45,10 @@ int main() {
         }
 
         tree.insert(tree.get_head(), user_x, user_y);
-        
+
         std::cout << "continue? ";
         std::cin >> cont;
+        std::cout << std::endl;
 
         if (cont == 'n')
         {

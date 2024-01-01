@@ -19,12 +19,7 @@ Node::Node(double x0, double y0, double x1, double y1) {
     this->top_left = this->bottom_left = this->bottom_right = this->top_right = nullptr;
 }
 
-void Node::add_point(double& x, double& y) {
-    // add point to the end of the array
-    if (this->arr_size == m) {
-        std::cout << "didn't add, need to expand tree" << std::endl;
-        return;
-    }
+void Node::add_point(double x, double y) {
 
     // package point
     Point descartes = Point(x, y);
@@ -54,23 +49,26 @@ void Node::expand() {
     this->top_right = nthGenTR;
 
     // distribute the points to the children
-    std::cout << "iterating through array, if there is segmentation, the arr was exceeding. On void Node::expand" << std::endl;
     for (int i{0}; i < m; ++i) {
-        std::cout << "iterating" << points[i].get_x() << ", " << points[i].get_y() << std::endl;
+        std::cout << "adding point " << points[i].get_x() << ", " << points[i].get_y() << " to ";
         if (points[i].get_x() <= x_mid && points[i].get_y() >= y_mid) {
-            std::cout << "gave point to top left" << std::endl;
+            std::cout << "top left" << std::endl;
+            this->top_left->add_point(points[i].get_x(), points[i].get_y());
         } else if (points[i].get_x() <= x_mid && points[i].get_y() < y_mid) {
-            std::cout << "gave point to bottom left" << std::endl;
+            std::cout << "bottom left" << std::endl;
+            this->bottom_left->add_point(points[i].get_x(), points[i].get_y());
         } else if (points[i].get_x() > x_mid && points[i].get_y() < y_mid) {
-            std::cout << "gave point to bottom right" << std::endl;
+            std::cout << "bottom right" << std::endl;
+            this->bottom_right->add_point(points[i].get_x(), points[i].get_y());
         } else if (points[i].get_x() > x_mid && points[i].get_y() >= y_mid) {
-            std::cout << "gave point to top right" << std::endl;
+            std::cout << "top right" << std::endl;
+            this->top_right->add_point(points[i].get_x(), points[i].get_y());
         } else {
             std::cout << "error value: " << points[i].get_x() << points[i].get_y() << std::endl;
         }
-        
-        Point temp(0,0);
-        points[i] = temp;
     }
 
+    // free the array from the parent pointer because it is no longer needed and points to null
+    // delete[] this->points;
+    // this->points = nullptr;
 }

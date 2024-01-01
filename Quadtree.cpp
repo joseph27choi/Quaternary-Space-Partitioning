@@ -48,16 +48,18 @@ void Quadtree::insert(Node* p_trav, double x, double y) {
     if (p_trav->get_bottom_left() == nullptr || p_trav->get_bottom_right() == nullptr ||
         p_trav->get_top_left() == nullptr || p_trav->get_top_right() == nullptr) {
         
-        // see if able to add point
+        p_trav->add_point(x,y);
+        std::cout << "successfully added point" << std::endl;
+
+        // if array is full, expand and redistribute
         if (p_trav->get_arr_size() == p_trav->get_m())
         {
-            std::cout << "must expand before adding" << std::endl;
+            std::cout << "must expand" << std::endl;
             p_trav->expand();
+            print(p_trav);
             return;
         }
 
-        p_trav->add_point(x,y);
-        std::cout << "successfully added point" << std::endl;
         return;
     }
 
@@ -114,7 +116,8 @@ void Quadtree::destroy(Node* p_trav) {
     std::cout << p_trav->get_y0() << ", ";
     std::cout << p_trav->get_x1() << ", ";
     std::cout << p_trav->get_y1() << std::endl;
-    // delete the array in there as well
+
+    // delete the node
     delete[] p_trav->get_points();
     delete p_trav;
     p_trav = nullptr;
