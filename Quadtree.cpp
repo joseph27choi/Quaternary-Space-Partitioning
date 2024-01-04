@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <cmath>
 
 #include "Node.h"
 
@@ -12,8 +13,6 @@ Quadtree::Quadtree(Node* first_node) {
 
 // just testing, need to fix
 void Quadtree::print(Node* trav) {
-    std::cout << "entered Quadtree::print()" << std::endl;
-
     // base case 1: head does not exist yet
     if (trav == nullptr) {
         return;
@@ -29,7 +28,6 @@ void Quadtree::print(Node* trav) {
     }
 
     // reached end node? print
-    std::cout << "promise fulfilled" << std::endl;
     std::cout << trav->get_x0() << ", ";
     std::cout << trav->get_y0() << ", ";
     std::cout << trav->get_x1() << ", ";
@@ -43,6 +41,80 @@ void Quadtree::print(Node* trav) {
     return;
 }
 
+void Quadtree::search(Node* p_trav, double x, double y, double d) {
+    // Base case: reached leaf, see if any point exists in this region
+    if (p_trav->get_bottom_left() == nullptr || p_trav->get_bottom_right() == nullptr ||
+        p_trav->get_top_left() == nullptr || p_trav->get_top_right() == nullptr) {
+        bool point_exists = p_trav->get_arr_size() != 0 ? true : false;
+        std::cout << "point exists? " << point_exists << std::endl;
+
+        // Check if any points within the leaf node fall within the radius
+        for (int i = 0; i < p_trav->get_arr_size(); ++i) {
+            double point_x = p_trav->get_points()[i].get_x();
+            double point_y = p_trav->get_points()[i].get_y();
+
+            double distance = std::sqrt(std::pow((point_x - x), 2) + std::pow((point_y - y), 2));
+
+            if (distance <= d) {
+                std::cout << "Point within radius: (" << point_x << ", " << point_y << ")" << std::endl;
+            }
+        }
+
+        return;
+    }
+
+    // Otherwise, direct to the children nodes
+    double x_mid = 0.5 * (p_trav->get_x1() + p_trav->get_x0());
+    double y_mid = 0.5 * (p_trav->get_y1() + p_trav->get_y0());
+
+    // Recursively search all child nodes
+    if (x <= x_mid && y >= y_mid) {
+        search(p_trav->get_top_left(), x, y, d);
+        if (std::abs(x - x_mid) >= d) {
+            search(p_trav->get_top_right(), x, y, d);
+        }
+        if (std::abs(y - y_mid) >= d) {
+            search(p_trav->get_bottom_left(), x, y, d);
+        }
+        if (std::abs(x - x_mid) >= d && std::abs(y - y_mid) >= d) {
+            search(p_trav->get_bottom_right(), x, y, d);
+        }
+    } else if (x <= x_mid && y < y_mid) {
+        search(p_trav->get_bottom_left(), x, y, d);
+        if (std::abs(x - x_mid) >= d) {
+            search(p_trav->get_top_left(), x, y, d);
+        }
+        if (std::abs(y - y_mid) >= d) {
+            search(p_trav->get_bottom_right(), x, y, d);
+        }
+        if (std::abs(x - x_mid) >= d && std::abs(y - y_mid) >= d) {
+            search(p_trav->get_top_right(), x, y, d);
+        }
+    } else if (x > x_mid && y < y_mid) {
+        search(p_trav->get_bottom_right(), x, y, d);
+        if (std::abs(x - x_mid) >= d) {
+            search(p_trav->get_top_right(), x, y, d);
+        }
+        if (std::abs(y - y_mid) >= d) {
+            search(p_trav->get_bottom_left(), x, y, d);
+        }
+        if (std::abs(x - x_mid) >= d && std::abs(y - y_mid) >= d) {
+            search(p_trav->get_top_left(), x, y, d);
+        }
+    } else if (x > x_mid && y >= y_mid) {
+        search(p_trav->get_top_right(), x, y, d);
+        if (std::abs(x - x_mid) >= d) {
+            search(p_trav->get_top_left(), x, y, d);
+        }
+        if (std::abs(y - y_mid) >= d) {
+            search(p_trav->get_bottom_right(), x, y, d);
+        }
+        if (std::abs(x - x_mid) >= d && std::abs(y - y_mid) >= d) {
+            search(p_trav->get_bottom_left(), x, y, d);
+        }
+    }
+}
+
 void Quadtree::insert(Node* p_trav, double x, double y) {
     // base case: no tree
     if (p_trav == nullptr) {
@@ -53,13 +125,11 @@ void Quadtree::insert(Node* p_trav, double x, double y) {
     // base case: all children are nullpointers
     if (p_trav->get_bottom_left() == nullptr || p_trav->get_bottom_right() == nullptr ||
         p_trav->get_top_left() == nullptr || p_trav->get_top_right() == nullptr) {
-        
-        p_trav->add_point(x,y);
+        p_trav->add_point(x, y);
         std::cout << "successfully added point" << std::endl;
 
         // if array is full, expand and redistribute
-        if (p_trav->get_arr_size() == p_trav->get_m())
-        {
+        if (p_trav->get_arr_size() == p_trav->get_m()) {
             std::cout << "must expand" << std::endl;
             p_trav->expand();
             print(p_trav);
@@ -91,7 +161,6 @@ void Quadtree::insert(Node* p_trav, double x, double y) {
 
     return;
 }
-
 
 Quadtree::~Quadtree() {
     // recursively destroy
@@ -131,4 +200,8 @@ void Quadtree::destroy(Node* p_trav) {
     p_trav = nullptr;
 
     return;
+}
+
+void Quadtree::traverse(Node* p_trav) {
+    // traverses until reaches base case
 }
