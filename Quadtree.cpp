@@ -1,8 +1,8 @@
 #include "Quadtree.h"
 
+#include <cmath>
 #include <iostream>
 #include <string>
-#include <cmath>
 
 #include "Node.h"
 
@@ -28,14 +28,22 @@ void Quadtree::print(Node* trav) {
     }
 
     // reached end node? print
+    std::cout << "(";
     std::cout << trav->get_x0() << ", ";
     std::cout << trav->get_y0() << ", ";
     std::cout << trav->get_x1() << ", ";
-    std::cout << trav->get_y1() << " ";
+    std::cout << trav->get_y1() << "";
+    std::cout << ") ";
     if (trav->get_points() != nullptr) {
-        std::cout << trav->get_points()[0].get_x() << trav->get_points()[0].get_y() << std::endl;
+        std::cout << " contains ";
+        for (int i = 0, n = trav->get_arr_size(); i < n; ++i) {
+            std::cout << "(";
+            std::cout << trav->get_points()[i].get_x() << ", " << trav->get_points()[i].get_y();
+            std::cout << ") ";
+        }
+        std::cout << std::endl;
     } else {
-        std::cout << "points no longer stored in this node" << std::endl;
+        std::cout << " no longer contains points." << std::endl;
     }
 
     return;
@@ -130,9 +138,14 @@ void Quadtree::insert(Node* p_trav, double x, double y) {
 
         // if array is full, expand and redistribute
         if (p_trav->get_arr_size() == p_trav->get_m()) {
+            std::cout << std::endl;
             std::cout << "must expand" << std::endl;
             p_trav->expand();
+            std::cout << std::endl;
+            
+            std::cout << "current working tree..." << std::endl;
             print(p_trav);
+            std::cout << std::endl << std::endl;
             return;
         }
 
