@@ -63,6 +63,7 @@ int main() {
                 std::cin >> cont;
                 std::cout << std::endl;
             }
+            cont = 0;
         } else if (inp_str.compare("S") == 0) {
             std::cout << "SEARCHING NOW" << std::endl;
             std::cout << std::endl;
@@ -85,6 +86,10 @@ int main() {
             std::cout << "PRINTING NOW" << std::endl;
             std::cout << std::endl;
             tree.print(tree.get_head());
+            std::cout << std::endl;
+            std::cout << "." << std::endl;
+            std::cout << "." << std::endl;
+            std::cout << "." << std::endl;
             std::cout << std::endl;
         }
     }
