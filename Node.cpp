@@ -32,7 +32,6 @@ void Node::add_point(double x, double y) {
 }
 
 void Node::expand() {
-
     // add the four children node with quarter the size
     double x_mid = 0.5 * (this->x1 + this->x0);
     double y_mid = 0.5 * (this->y1 + this->y0);

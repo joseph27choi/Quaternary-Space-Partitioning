@@ -133,15 +133,6 @@ void Quadtree::insert(Node* p_trav, double x, double y) {
     // base case: all children are nullpointers
     if (p_trav->get_bottom_left() == nullptr || p_trav->get_bottom_right() == nullptr ||
         p_trav->get_top_left() == nullptr || p_trav->get_top_right() == nullptr) {
-        p_trav->add_point(x, y);
-        std::cout << "successfully added point" << std::endl;
-        std::cout << "(";
-        std::cout << p_trav->get_x0() << ", ";
-        std::cout << p_trav->get_y0() << ", ";
-        std::cout << p_trav->get_x1() << ", ";
-        std::cout << p_trav->get_y1() << "";
-        std::cout << ") has " << p_trav->get_arr_size() << " elements" << std::endl;
-
         // if array is full, expand and redistribute
         if (p_trav->get_arr_size() == p_trav->get_m()) {
             std::cout << std::endl;
@@ -153,8 +144,20 @@ void Quadtree::insert(Node* p_trav, double x, double y) {
             print(p_trav);
             std::cout << std::endl
                       << std::endl;
+
+            insert(p_trav, x, y);
             return;
         }
+        
+        p_trav->add_point(x, y);
+
+        std::cout << "successfully added point" << std::endl;
+        std::cout << "(";
+        std::cout << p_trav->get_x0() << ", ";
+        std::cout << p_trav->get_y0() << ", ";
+        std::cout << p_trav->get_x1() << ", ";
+        std::cout << p_trav->get_y1() << "";
+        std::cout << ") has " << p_trav->get_arr_size() << " elements" << std::endl;
 
         return;
     }
