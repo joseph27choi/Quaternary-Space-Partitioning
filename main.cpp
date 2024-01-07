@@ -7,34 +7,21 @@
 
 int Node::m = 4;
 
+// declarations
+void set_boundary(double&, double&, double&, double&);
+int main();
+
 int main() {
     std::cout << "Welcome to the Quaternary Space Partitioning Tree. " << std::endl;
 
-    double user_x0;
-    double user_y0;
-    double user_x1;
-    double user_y1;
+    double user_x0, user_y0, user_x1, user_y1;
 
-    // prompt user for points
-    std::cout << "First, enter your boundary points" << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "x0: ";
-    std::cin >> user_x0;
-    std::cout << "y0: ";
-    std::cin >> user_y0;
-    std::cout << "x1: ";
-    std::cin >> user_x1;
-    std::cout << "y1: ";
-    std::cin >> user_y1;
-
-    std::cout << std::endl;
+    set_boundary(user_x0, user_y0, user_x1, user_y1);
 
     Node* head = new Node(user_x0, user_y0, user_x1, user_y1);
     Quadtree tree = Quadtree(head);
 
     std::string inp_str = "";
-
     while (inp_str.compare("EXIT") != 0) {
         std::cout << "Enter 'I' to insert points, 'S' to search for points, 'P' to print, 'EXIT' to exit: " << std::endl;
         std::cin >> inp_str;
@@ -97,4 +84,22 @@ int main() {
     std::cout << std::endl;
     std::cout << "end of program" << std::endl;
     return 0;
+}
+
+
+void set_boundary(double& user_x0, double& user_y0, double& user_x1, double& user_y1) {
+    // prompt user for points
+    std::cout << "First, enter your boundary points" << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << "x0: ";
+    std::cin >> user_x0;
+    std::cout << "y0: ";
+    std::cin >> user_y0;
+    std::cout << "x1: ";
+    std::cin >> user_x1;
+    std::cout << "y1: ";
+    std::cin >> user_y1;
+
+    std::cout << std::endl;
 }
