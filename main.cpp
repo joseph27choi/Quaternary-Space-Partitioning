@@ -10,8 +10,11 @@ int Node::m = 4;
 // declarations
 void set_boundary(double&, double&, double&, double&);
 void handle_input(Quadtree& tree, char& cont, double& user_x0, double& user_y0, double& user_x1, double& user_y1);
+void handle_search(Quadtree& tree);
+void handle_print(Quadtree& tree);
 int main();
 
+// definitions
 int main() {
     std::cout << "Welcome to the Quaternary Space Partitioning Tree. " << std::endl;
 
@@ -33,32 +36,9 @@ int main() {
             handle_input(tree, cont, user_x0, user_y0, user_x1, user_y1);
             cont = 0;
         } else if (inp_str.compare("S") == 0) {
-            std::cout << "SEARCHING NOW" << std::endl;
-            std::cout << std::endl;
-
-            std::cout << "enter the point you want to search" << std::endl;
-            double user_x;
-            double user_y;
-            double radius;
-            std::cout << "enter x: ";
-            std::cin >> user_x;
-            std::cout << "enter y: ";
-            std::cin >> user_y;
-            std::cout << "enter the radius of search: ";
-            std::cin >> radius;
-            tree.search(tree.get_head(), user_x, user_y, radius);
-            std::cout << std::endl;
-        }
-
-        else if (inp_str.compare("P") == 0) {
-            std::cout << "PRINTING NOW" << std::endl;
-            std::cout << std::endl;
-            tree.print(tree.get_head());
-            std::cout << std::endl;
-            std::cout << "." << std::endl;
-            std::cout << "." << std::endl;
-            std::cout << "." << std::endl;
-            std::cout << std::endl;
+            handle_search(tree);
+        } else if (inp_str.compare("P") == 0) {
+            handle_print(tree);
         }
     }
 
@@ -106,4 +86,32 @@ void handle_input(Quadtree& tree, char& cont, double& user_x0, double& user_y0, 
         std::cin >> cont;
         std::cout << std::endl;
     }
+}
+
+void handle_search(Quadtree& tree) {
+    std::cout << "SEARCHING NOW" << std::endl;
+    std::cout << std::endl;
+    std::cout << "enter the point you want to search" << std::endl;
+    double user_x;
+    double user_y;
+    double radius;
+    std::cout << "enter x: ";
+    std::cin >> user_x;
+    std::cout << "enter y: ";
+    std::cin >> user_y;
+    std::cout << "enter the radius of search: ";
+    std::cin >> radius;
+    tree.search(tree.get_head(), user_x, user_y, radius);
+    std::cout << std::endl;
+}
+
+void handle_print(Quadtree& tree) {
+    std::cout << "PRINTING NOW" << std::endl;
+    std::cout << std::endl;
+    tree.print(tree.get_head());
+    std::cout << std::endl;
+    std::cout << "." << std::endl;
+    std::cout << "." << std::endl;
+    std::cout << "." << std::endl;
+    std::cout << std::endl;
 }
